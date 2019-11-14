@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/cadastro_btn"
             android:layout_width="378dp"
             android:layout_height="45dp"
             android:layout_marginStart="16dp"
@@ -37,10 +37,10 @@
             android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText7" />
+            app:layout_constraintTop_toBottomOf="@+id/cadastro_telefone_txt" />
 
         <EditText
-            android:id="@+id/editText7"
+            android:id="@+id/cadastro_telefone_txt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -52,10 +52,10 @@
             android:inputType="phone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText8" />
+            app:layout_constraintTop_toBottomOf="@+id/cadastro_nome_txt" />
 
         <EditText
-            android:id="@+id/editText8"
+            android:id="@+id/cadastro_nome_txt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

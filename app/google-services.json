@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "63497976385",
+    "firebase_url": "https://hear-3445b.firebaseio.com",
+    "project_id": "hear-3445b",
+    "storage_bucket": "hear-3445b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:63497976385:android:19387e3eba9c78d567e4c0",
+        "android_client_info": {
+          "package_name": "com.mpes.hear"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "63497976385-p677e34isgsmgodahv73g2hkhcpem55q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALUr4yf7Ozq-7-AbwQU1YHfwJ1LN0Ek18"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "63497976385-p677e34isgsmgodahv73g2hkhcpem55q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
