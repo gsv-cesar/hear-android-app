@@ -59,36 +59,46 @@ class CadastroUsuarioActivity : AppCompatActivity() {
         val email       = emailTxt.text.toString().trim()
         val senha       = senhaTxt.text.toString().trim()
 
-        if (!nome.isEmpty() && !telefone.isEmpty() && !email.isEmpty() && !senha.isEmpty()){
+        if (nome.isNotEmpty() && telefone.isNotEmpty() && email.isNotEmpty() && senha.isNotEmpty()){
+
+            val items = HashMap<String, Any>()
+            items.put("nome", nome)
+            items.put("telefone", telefone)
+            items.put("email", email)
+            items.put("senha", senha)
+
             try {
-                val items = HashMap<String, Any>()
-                items.put("nome", nome)
-                items.put("telefone", telefone)
-                items.put("email", email)
-                items.put("senha", senha)
 
                 db
                     .set(items)
-                    .addOnSuccessListener { Toast.makeText(this,  "OK...: (", Toast.LENGTH_LONG).show() }
-                    .addOnFailureListener{Toast.makeText(this,  "ERRO...: (", Toast.LENGTH_LONG).show() }
+                    .addOnSuccessListener { Toast.makeText(this,  "Cadastro OK", Toast.LENGTH_LONG).show() }
+                    .addOnFailureListener{Toast.makeText(this,  "Cadastro ERRO", Toast.LENGTH_LONG).show() }
 
-                auth.createUserWithEmailAndPassword(email, senha)
-                    .addOnSuccessListener { Toast.makeText(this,  "Usuário criado...: (", Toast.LENGTH_LONG).show() }
-                    .addOnFailureListener{ ex ->
-
-                        if (ex is FirebaseAuthUserCollisionException)
-                            Toast.makeText(this,  "E-mail já existente...: (", Toast.LENGTH_LONG).show()
-                        else
-                            Toast.makeText(this,  ex.toString(), Toast.LENGTH_LONG).show()
-                    }
-
-                Toast.makeText(this,  "Continue...: (", Toast.LENGTH_LONG).show()
+                auth(email, senha)
 
             }catch (e: Exception){
                 Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
             }
         }else{
-            Toast.makeText(this,  "Por favor, preencha os campos!: (", Toast.LENGTH_LONG).show()
+            Toast.makeText(this,  "Por favor, preencha os campos", Toast.LENGTH_LONG).show()
+        }
+
+    }
+
+    private fun auth(email: String, senha: String){
+
+        try {
+            auth.createUserWithEmailAndPassword(email, senha)
+                .addOnSuccessListener { Toast.makeText(this,  "Autenticação OK", Toast.LENGTH_LONG).show() }
+                .addOnFailureListener{ ex ->
+
+                    if (ex is FirebaseAuthUserCollisionException)
+                        Toast.makeText(this,  "E-mail já existente!", Toast.LENGTH_LONG).show()
+                    else
+                        Toast.makeText(this,  ex.toString(), Toast.LENGTH_LONG).show()
+                }
+        }catch (e: Exception){
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
         }
 
     }
