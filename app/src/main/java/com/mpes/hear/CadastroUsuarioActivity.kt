@@ -97,6 +97,11 @@ class CadastroUsuarioActivity : AppCompatActivity() {
                     else
                         Toast.makeText(this,  ex.toString(), Toast.LENGTH_LONG).show()
                 }
+
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+
         }catch (e: Exception){
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
         }
