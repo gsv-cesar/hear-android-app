@@ -89,7 +89,12 @@ class CadastroUsuarioActivity : AppCompatActivity() {
 
         try {
             auth.createUserWithEmailAndPassword(email, senha)
-                .addOnSuccessListener { Toast.makeText(this,  "Autenticação OK", Toast.LENGTH_LONG).show() }
+                .addOnSuccessListener {
+                    Toast.makeText(this,  "Autenticação OK", Toast.LENGTH_LONG).show()
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
                 .addOnFailureListener{ ex ->
 
                     if (ex is FirebaseAuthUserCollisionException)
@@ -98,9 +103,6 @@ class CadastroUsuarioActivity : AppCompatActivity() {
                         Toast.makeText(this,  ex.toString(), Toast.LENGTH_LONG).show()
                 }
 
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
 
         }catch (e: Exception){
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()

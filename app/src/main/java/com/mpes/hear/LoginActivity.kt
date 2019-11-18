@@ -48,11 +48,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         val usuarioAtivo = auth.currentUser
-        atualizarUI(usuarioAtivo)
-    }
-
-    private fun atualizarUI(usuario: FirebaseUser?) {
-        if (usuario != null){
+        if (usuarioAtivo != null){
             val intent = Intent(this, DashActivity::class.java)
             startActivity(intent)
             finish()

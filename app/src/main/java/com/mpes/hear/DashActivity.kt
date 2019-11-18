@@ -1,8 +1,10 @@
 package com.mpes.hear
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Button
 import com.google.firebase.auth.FirebaseAuth
 
 class DashActivity : AppCompatActivity() {
@@ -17,6 +19,16 @@ class DashActivity : AppCompatActivity() {
 
         supportActionBar?.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        val btn = findViewById<Button>(R.id.dash_botaoSair)
+        btn.setOnClickListener {
+            signOut()
+        }
+    }
+
+    private fun signOut(){
+        auth.signOut()
+        finish()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
