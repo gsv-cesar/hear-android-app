@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
@@ -24,17 +25,23 @@ class LoginActivity : AppCompatActivity() {
         supportActionBar?.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val emailTxt     = findViewById<View>(R.id.login_emailTxt) as EditText
-        val senhaTxt = findViewById<View>(R.id.login_senhaTxt) as EditText
 
-        val email       = emailTxt.text.toString().trim()
-        val senha       = senhaTxt.text.toString().trim()
 
         val btn = findViewById<Button>(R.id.login_btnentrar)
         btn.setOnClickListener {
-            val intent = Intent(this, ContatoEmergenciaActivity::class.java)
-            startActivity(intent)
-            finish()
+
+            val emailTxt     = findViewById<View>(R.id.login_emailTxt) as EditText
+            val senhaTxt     = findViewById<View>(R.id.login_senhaTxt) as EditText
+
+            val email       = emailTxt.text.toString().trim()
+            val senha       = senhaTxt.text.toString().trim()
+
+            if (email.isNotEmpty() && senha.isNotEmpty()) {
+                signIn(email, senha)
+            }else{
+                Toast.makeText(this,  "Preencha o(s) campo(s)!", Toast.LENGTH_LONG).show()
+            }
+
         }
 
         val txt = findViewById<TextView>(R.id.login_txtcad)
@@ -52,11 +59,32 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun atualizarUI(usuario: FirebaseUser?){
+
         if (usuario != null){
             val intent = Intent(this, DashActivity::class.java)
             startActivity(intent)
             finish()
         }
+    }
+
+    private fun signIn(email: String, senha: String){
+
+        auth.signInWithEmailAndPassword(email, senha)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    val user = auth.currentUser
+                    atualizarUI(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Toast.makeText(
+                        baseContext, "Authentication failed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    atualizarUI(null)
+                }
+
+            }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
