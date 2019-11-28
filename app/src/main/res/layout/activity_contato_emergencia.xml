@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CadastroUsuarioActivity">
+    tools:context=".ContatoEmergenciaActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/emergencia_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/cadastro_btn"
+            android:id="@+id/emergencia_btn"
             android:layout_width="378dp"
             android:layout_height="45dp"
             android:layout_marginStart="16dp"
@@ -33,14 +33,14 @@
             android:layout_marginEnd="16dp"
             android:background="@color/colorPrimary"
             android:fontFamily="@font/bambino"
-            android:text="CONTINUAR"
+            android:text="CADASTRAR"
             android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cadastro_telefone_txt" />
+            app:layout_constraintTop_toBottomOf="@+id/emergencia_telefone_txt" />
 
         <EditText
-            android:id="@+id/cadastro_telefone_txt"
+            android:id="@+id/emergencia_telefone_txt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -52,10 +52,10 @@
             android:inputType="phone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cadastro_nome_txt" />
+            app:layout_constraintTop_toBottomOf="@+id/emergencia_nome_txt" />
 
         <EditText
-            android:id="@+id/cadastro_nome_txt"
+            android:id="@+id/emergencia_nome_txt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -67,7 +67,7 @@
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintTop_toBottomOf="@+id/emergencia_textView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
