@@ -11,9 +11,12 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
 
 class LoginActivity : AppCompatActivity() {
 
+    lateinit var db: CollectionReference
     lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,6 +24,8 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         auth = FirebaseAuth.getInstance()
+        val doc =   auth.uid.toString()
+        db = FirebaseFirestore.getInstance().collection("cadastro/"+doc)
 
         supportActionBar?.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -61,9 +66,10 @@ class LoginActivity : AppCompatActivity() {
     private fun atualizarUI(usuario: FirebaseUser?){
 
         if (usuario != null){
-            val intent = Intent(this, DashActivity::class.java)
-            startActivity(intent)
-            finish()
+
+            val intent = Intent(this, ContatoEmergenciaActivity::class.java)
+                startActivity(intent)
+                finish()
         }
     }
 
