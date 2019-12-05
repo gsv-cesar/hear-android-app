@@ -24,8 +24,8 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         auth = FirebaseAuth.getInstance()
-        val doc =   auth.uid.toString()
-        db = FirebaseFirestore.getInstance().collection("cadastro/"+doc)
+        //val doc =   auth.uid.toString()
+        //db = FirebaseFirestore.getInstance().collection("cadastro/"+doc)
 
         supportActionBar?.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
