@@ -84,7 +84,7 @@ class LoginActivity : AppCompatActivity() {
                 } else {
                     // If sign in fails, display a message to the user.
                     Toast.makeText(
-                        baseContext, "Authentication failed.",
+                        baseContext, "Falha na autenticação.",
                         Toast.LENGTH_SHORT
                     ).show()
                     atualizarUI(null)
