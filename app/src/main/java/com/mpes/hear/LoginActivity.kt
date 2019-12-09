@@ -19,13 +19,20 @@ class LoginActivity : AppCompatActivity() {
     lateinit var db: CollectionReference
     lateinit var auth: FirebaseAuth
 
+    var telEmerg = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        auth = FirebaseAuth.getInstance()
-        //val doc =   auth.uid.toString()
-        //db = FirebaseFirestore.getInstance().collection("cadastro/"+doc)
+        auth    = FirebaseAuth.getInstance()
+        val doc =   auth.uid.toString()
+        db      = FirebaseFirestore.getInstance().collection("cadastro")
+
+
+        val docRef  =   db.document(doc).get().addOnSuccessListener { document ->
+            telEmerg = document["telefoneEmergencia"].toString()
+        }
 
         supportActionBar?.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -67,9 +74,19 @@ class LoginActivity : AppCompatActivity() {
 
         if (usuario != null){
 
-            val intent = Intent(this, ContatoEmergenciaActivity::class.java)
+
+
+            Toast.makeText(this,  telEmerg, Toast.LENGTH_LONG).show()
+
+            if (telEmerg != null && telEmerg != "") {
+                val intent = Intent(this, DashActivity::class.java)
                 startActivity(intent)
                 finish()
+            }else{
+                val intent = Intent(this, ContatoEmergenciaActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
     }
 
