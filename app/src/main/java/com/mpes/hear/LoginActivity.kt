@@ -13,31 +13,24 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.mpes.hear.firebase.Auth
+import com.mpes.hear.firebase.Database
+import com.mpes.hear.firebase.DatabaseFireBaseListener
+import com.mpes.hear.firebase.LoginFireBaseListener
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), LoginFireBaseListener, DatabaseFireBaseListener {
 
-    lateinit var db: CollectionReference
-    lateinit var auth: FirebaseAuth
 
-    var telEmerg = ""
+    var db      = Database(this)
+    var auth    = Auth(this)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        auth    = FirebaseAuth.getInstance()
-        val doc =   auth.uid.toString()
-        db      = FirebaseFirestore.getInstance().collection("cadastro")
-
-
-        val docRef  =   db.document(doc).get().addOnSuccessListener { document ->
-            telEmerg = document["telefoneEmergencia"].toString()
-        }
-
         supportActionBar?.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-
 
         val btn = findViewById<Button>(R.id.login_btnentrar)
         btn.setOnClickListener {
@@ -64,17 +57,9 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        val usuarioAtivo = auth.currentUser
-        atualizarUI(usuarioAtivo)
-    }
-
-    private fun atualizarUI(usuario: FirebaseUser?){
+    private fun atualizarUI(usuario: FirebaseUser?, telEmerg: String?){
 
         if (usuario != null){
-
-
 
             Toast.makeText(this,  telEmerg, Toast.LENGTH_LONG).show()
 
@@ -91,23 +76,30 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun signIn(email: String, senha: String){
+        auth.entrar(email, senha, this)
+    }
 
-        auth.signInWithEmailAndPassword(email, senha)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    val user = auth.currentUser
-                    atualizarUI(user)
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Toast.makeText(
-                        baseContext, "Falha na autenticação.                                                                                 ",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    atualizarUI(null)
-                }
+    override fun OnLoginCompleteListener(successful: Boolean) {
 
-            }
+        Toast.makeText(this,  "Teste", Toast.LENGTH_LONG).show()
+
+        if (successful) {
+            db.getTelEmergencia(db.getCollection("cadastro"), auth.getUid(), this)
+        }
+        else {
+            Toast.makeText(
+                baseContext, "Falha na autenticação.",
+                Toast.LENGTH_SHORT
+            ).show()
+            atualizarUI(null, null)
+        }
+    }
+
+    override fun OnDbCompleteListener(telEmerg: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        //atualizarUI(auth.getUser(), telEmerg)
+        Toast.makeText(this,  telEmerg, Toast.LENGTH_LONG).show()
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
