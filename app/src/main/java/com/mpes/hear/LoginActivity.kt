@@ -81,8 +81,6 @@ class LoginActivity : AppCompatActivity(), LoginFireBaseListener, DatabaseFireBa
 
     override fun OnLoginCompleteListener(successful: Boolean) {
 
-        Toast.makeText(this,  "Teste", Toast.LENGTH_LONG).show()
-
         if (successful) {
             db.getTelEmergencia(db.getCollection("cadastro"), auth.getUid(), this)
         }
@@ -96,9 +94,8 @@ class LoginActivity : AppCompatActivity(), LoginFireBaseListener, DatabaseFireBa
     }
 
     override fun OnDbCompleteListener(telEmerg: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        //atualizarUI(auth.getUser(), telEmerg)
-        Toast.makeText(this,  telEmerg, Toast.LENGTH_LONG).show()
+
+        atualizarUI(auth.getUser(), telEmerg)
 
     }
 
