@@ -14,18 +14,13 @@ class Database (activity: Activity) {
         return db.collection(collection)
     }
 
-    fun getTelEmergencia(collectionReference: CollectionReference, uid: String, listener: DatabaseFireBaseListener){
+    fun getTelEmergencia(collectionReference: CollectionReference, uid: String, listener: (String) -> Unit){
+        collectionReference.document(uid).get().addOnSuccessListener(act) { document ->
+            val telEmerg = document["telefoneEmergencia"].toString()
 
-       collectionReference.document(uid).get().addOnSuccessListener(act) { document ->
-           val telEmerg = document["telefoneEmergencia"].toString()
-
-           listener.OnDbCompleteListener(telEmerg)
+            listener(telEmerg)
 
         }
     }
 
-}
-
-interface  DatabaseFireBaseListener {
-    fun OnDbCompleteListener(telEmerg: String)
 }
