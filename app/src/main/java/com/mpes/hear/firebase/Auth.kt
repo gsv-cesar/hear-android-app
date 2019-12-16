@@ -17,6 +17,10 @@ class Auth (activity: Activity) {
             }
     }
 
+    fun sair(){
+        auth.signOut()
+    }
+
     fun getUser(): FirebaseUser? {
         return auth.currentUser
     }
