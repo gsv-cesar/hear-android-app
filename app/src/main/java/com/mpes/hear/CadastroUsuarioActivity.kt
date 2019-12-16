@@ -111,7 +111,7 @@ class CadastroUsuarioActivity : AppCompatActivity() {
                         db.document(doc)
                         .set(prepDados()!!)
                         .addOnSuccessListener {
-                            val intent = Intent(this, LoginActivity::class.java)
+                            val intent = Intent(this, StartActivity::class.java)
                             startActivity(intent)
                             finish()
                             Toast.makeText(
@@ -133,7 +133,6 @@ class CadastroUsuarioActivity : AppCompatActivity() {
             }
 
     }
-
 
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

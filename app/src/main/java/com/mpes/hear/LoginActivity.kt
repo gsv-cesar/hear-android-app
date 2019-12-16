@@ -59,8 +59,6 @@ class LoginActivity : AppCompatActivity() {
 
         if (usuario != null){
 
-            Toast.makeText(this,  telEmerg, Toast.LENGTH_LONG).show()
-
             if (telEmerg != null && telEmerg != "") {
                 val intent = Intent(this, DashActivity::class.java)
                 startActivity(intent)
