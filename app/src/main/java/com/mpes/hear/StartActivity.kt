@@ -1,8 +1,10 @@
 package com.mpes.hear
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -10,11 +12,13 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.mpes.hear.firebase.Auth
 import com.mpes.hear.firebase.Database
+import com.mpes.hear.utils.Permission
 
 class StartActivity : AppCompatActivity() {
 
     var auth    = Auth(this)
     var db      = Database(this)
+    private val permission = Permission(this)
 
     lateinit var txt: TextView
 
@@ -58,5 +62,11 @@ class StartActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         txt.isGone = auth.getUser() != null
+
+        permission.requestPermissions()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        permission.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }
