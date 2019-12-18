@@ -13,8 +13,7 @@ class Permission(activity: Activity) {
 
     private val permissions = arrayOf(
         Manifest.permission.SEND_SMS,
-        Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_COARSE_LOCATION
+        Manifest.permission.ACCESS_FINE_LOCATION
     )
 
     fun requestPermissions() {

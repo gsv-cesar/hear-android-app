@@ -1,6 +1,8 @@
 package com.mpes.hear
 
 import android.Manifest
+import android.app.AlertDialog
+import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +12,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -20,38 +23,67 @@ import com.mpes.hear.location.FusedLocation
 
 class DashActivity : AppCompatActivity() {
 
-    var db      = Database(this)
-    var auth    = Auth(this)
-
-    var telSMS: String? = null
+    lateinit var db: Database
+    lateinit var auth: Auth
+    lateinit var fused: FusedLocation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dash)
 
-        //Teste
-        val fused = FusedLocation(this)
-        fused.getLocation { latitude, longitude, endereco ->
-            Log.d("Jholl", latitude.toString())
-            Log.d("Jholl", longitude.toString())
-            Log.d("Jholl", endereco?.thoroughfare)
+        db      = Database(this)
+        auth    = Auth(this)
+        fused   = FusedLocation(this)
+
+        if (!fused.isActive()) {
+            AlertDialog.Builder(this)
+                .setMessage("Para solicitar ajuda por favor ative seu gps.")
+                .setTitle("Atenção")
+                .setPositiveButton("Ok") { _, _ ->
+                    val intent = Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    startActivity(intent)
+                    finish()
+                }
+                .setNegativeButton("Cancelar") { _, _ ->
+                    finish()
+                }
+                .create()
+                .show()
         }
-        //Teste
 
         supportActionBar?.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        db.getTelEmergencia(db.getCollection("cadastro"), auth.getUid()) {tel ->
-            telSMS = tel
+        val btnPanico = findViewById<Button>(R.id.dash_btn_panico)
+        btnPanico.setOnClickListener {
+
+            msgPanico()
         }
+    }
+
+    fun msgPanico() {
+        db.getCadastro(db.getCollection("cadastro"), auth.getUid()) {
+            Log.d("Jhool",it.nome)
+
+            fused.getLocation { latitude, longitude, endereco ->
+                Log.d("Jholl", latitude.toString())
+                Log.d("Jholl", longitude.toString())
+                Log.d("Jholl", it.telefoneEmergencia)
+
+                var msgText = "SOCORRO! Olá, sou ${it.nome}."
+                if (endereco != null) {
+                    msgText += " Estou precisando de ajuda. ${endereco.getAddressLine(0)}"
+                }
 
 
-        val btn_panico = findViewById<Button>(R.id.dash_btn_panico)
-        btn_panico.setOnClickListener {
-
-            val smsManager = SmsManager.getDefault() as SmsManager
-            smsManager.sendTextMessage(telSMS, null, "Socorro! Estou precisando de ajuda.", null, null)
+                enviarSMS(it.telefoneEmergencia, msgText)
+            }
         }
+    }
+
+    fun enviarSMS(telefone: String, mensagem: String) {
+        val smsManager = SmsManager.getDefault() as SmsManager
+        smsManager.sendMultipartTextMessage(telefone, null, smsManager.divideMessage(mensagem), null, null)
     }
 
     private fun signOut(){
