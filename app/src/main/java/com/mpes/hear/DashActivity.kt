@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.telephony.SmsManager
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -30,7 +31,11 @@ class DashActivity : AppCompatActivity() {
 
         //Teste
         val fused = FusedLocation(this)
-        fused.getLocation()
+        fused.getLocation { latitude, longitude, endereco ->
+            Log.d("Jholl", latitude.toString())
+            Log.d("Jholl", longitude.toString())
+            Log.d("Jholl", endereco?.thoroughfare)
+        }
         //Teste
 
         supportActionBar?.title = ""
