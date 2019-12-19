@@ -1,25 +1,21 @@
 package com.mpes.hear
 
-import android.Manifest
 import android.app.AlertDialog
-import android.app.PendingIntent
 import android.content.Intent
-import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.telephony.SmsManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
 import android.widget.Button
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import com.google.firebase.auth.FirebaseAuth
+import androidx.appcompat.app.AppCompatActivity
 import com.mpes.hear.firebase.Auth
 import com.mpes.hear.firebase.Database
 import com.mpes.hear.location.FusedLocation
+import com.mpes.hear.services.VoiceService
+
 
 class DashActivity : AppCompatActivity() {
 
@@ -34,6 +30,18 @@ class DashActivity : AppCompatActivity() {
         db      = Database(this)
         auth    = Auth(this)
         fused   = FusedLocation(this)
+
+        Intent(this, VoiceService::class.java).also {
+            startService(it)
+        }
+
+        Intent(this, VoiceService::class.java).also {
+            val handler = Handler()
+            handler.postDelayed(Runnable {
+                // Actions to do after 10 seconds
+                stopService(it)
+            }, 10000)
+        }
 
         if (!fused.isActive()) {
             AlertDialog.Builder(this)
