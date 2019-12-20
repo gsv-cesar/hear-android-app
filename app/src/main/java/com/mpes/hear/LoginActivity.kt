@@ -15,10 +15,8 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mpes.hear.firebase.Auth
 import com.mpes.hear.firebase.Database
-import com.mpes.hear.firebase.DatabaseFireBaseListener
-import com.mpes.hear.firebase.LoginFireBaseListener
 
-class LoginActivity : AppCompatActivity(), LoginFireBaseListener, DatabaseFireBaseListener {
+class LoginActivity : AppCompatActivity() {
 
 
     var db      = Database(this)
@@ -61,8 +59,6 @@ class LoginActivity : AppCompatActivity(), LoginFireBaseListener, DatabaseFireBa
 
         if (usuario != null){
 
-            Toast.makeText(this,  telEmerg, Toast.LENGTH_LONG).show()
-
             if (telEmerg != null && telEmerg != "") {
                 val intent = Intent(this, DashActivity::class.java)
                 startActivity(intent)
@@ -76,27 +72,20 @@ class LoginActivity : AppCompatActivity(), LoginFireBaseListener, DatabaseFireBa
     }
 
     private fun signIn(email: String, senha: String){
-        auth.entrar(email, senha, this)
-    }
-
-    override fun OnLoginCompleteListener(successful: Boolean) {
-
-        if (successful) {
-            db.getTelEmergencia(db.getCollection("cadastro"), auth.getUid(), this)
+        auth.entrar(email, senha) {
+            if (it) {
+                db.getTelEmergencia(db.getCollection("cadastro"), auth.getUid()) {tel ->
+                    atualizarUI(auth.getUser(), tel)
+                }
+            }
+            else {
+                Toast.makeText(
+                    baseContext, "Falha na autenticação.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                atualizarUI(null, null)
+            }
         }
-        else {
-            Toast.makeText(
-                baseContext, "Falha na autenticação.",
-                Toast.LENGTH_SHORT
-            ).show()
-            atualizarUI(null, null)
-        }
-    }
-
-    override fun OnDbCompleteListener(telEmerg: String) {
-
-        atualizarUI(auth.getUser(), telEmerg)
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

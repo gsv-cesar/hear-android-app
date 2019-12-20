@@ -10,12 +10,15 @@ class Auth (activity: Activity) {
 
     val act = activity
 
-    fun entrar(email: String, senha: String, listener: LoginFireBaseListener){
-
+    fun entrar(email: String, senha: String, listener: (Boolean) -> Unit) {
         auth.signInWithEmailAndPassword(email, senha)
             .addOnCompleteListener(act) { task ->
-                listener.OnLoginCompleteListener(task.isSuccessful)
+                listener(task.isSuccessful)
             }
+    }
+
+    fun sair(){
+        auth.signOut()
     }
 
     fun getUser(): FirebaseUser? {
@@ -26,8 +29,4 @@ class Auth (activity: Activity) {
         return auth.uid.toString()
     }
 
-}
-
-interface  LoginFireBaseListener {
-    fun OnLoginCompleteListener(successful: Boolean)
 }
